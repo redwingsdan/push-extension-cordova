@@ -1,0 +1,48 @@
+<html>
+<head>
+  <title>Chrome Broadcast Desktop Notifications</title>
+  <link href="styles/bootstrap.min.css" rel="stylesheet">
+  <link href="styles/popup.css" rel="stylesheet">
+  <script src="scripts/pubnub.min.js"></script>
+  <script src="scripts/pubnub-setup.js"></script>
+  <script src="scripts/jquery-2.1.1.min.js"></script>
+  <style>
+    .container { width: 70%; }
+    .send-btn { margin-top: 10px; }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="jumbotron">
+      <h1>Hello Players</h1>
+      <p class="lead">This client is for the admin!</p>
+    </div>
+    <textarea id="noti_body" class="form-control" rows="3" 
+    placeholder="What do you want to tell the players?"></textarea>
+    <button type="button" class="btn btn-primary send-btn">Send</button>
+  </div>
+
+  <script>
+    $(function() {
+      var pb = PUBNUB.init(PUBNUB.setup);
+      $('.send-btn').click(function() {
+        pb.publish({
+          channel: PUBNUB.setup.channel,
+          message: {
+            iconUrl   : 'images/icon.png',
+            type      : 'basic',
+            title     : new Date(),
+            message   : $('#noti_body').val(),
+            priority  : 1,
+            buttons: [
+                {title: 'Yes', iconUrl: 'images/icon.png'},
+                {title: 'No', iconUrl: 'images/icon.png'}
+            ]
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
